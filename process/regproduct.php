@@ -18,7 +18,7 @@
     $imgName=$_FILES['img']['name'];
     $imgType=$_FILES['img']['type'];
     $imgSize=$_FILES['img']['size'];
-    $imgMaxSize=5120;
+    $imgMaxSize=8120;
 
     if($codeProd!="" && $nameProd!="" && $cateProd!="" && $priceProd!="" && $modelProd!="" && $marcaProd!="" && $stockProd!="" && $carProd!="" && $codePProd!=""){
         $verificar=  ejecutarSQL::consultar("SELECT * FROM producto WHERE CodigoProd='".$codeProd."'");
