@@ -24,7 +24,7 @@
                               <th class="text-center">Nombre</th>
                               <th class="text-center">Categoría</th>
                               <th class="text-center">Precio</th>
-                              <th class="text-center">Modelo</th>
+                              <th class="text-center">Talla</th>
                               <th class="text-center">Marca</th>
                               <th class="text-center">Stock</th>
                               <th class="text-center">Proveedor</th>

@@ -24,7 +24,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-xs-12">
-                                <legend>Datos básicos</legend>
+                                <legend>Datos del producto</legend>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                               <div class="form-group label-floating">
@@ -46,7 +46,7 @@
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                               <div class="form-group label-floating">
-                                <label class="control-label">Modelo</label>
+                                <label class="control-label">Talla</label>
                                 <input type="text" class="form-control" value="<?php echo $prod['Modelo']; ?>" required name="prod-model">
                               </div>
                             </div>
