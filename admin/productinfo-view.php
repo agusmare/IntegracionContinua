@@ -47,7 +47,7 @@
                             <div class="col-xs-12 col-sm-6 col-md-4">
                               <div class="form-group label-floating">
                                 <label class="control-label">Talla</label>
-                                <input type="text" class="form-control" value="<?php echo $prod['Modelo']; ?>" required name="prod-model">
+                                <input type="text" class="form-control" value="<?php echo $prod['Talla']; ?>" required name="prod-Talla">
                               </div>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
