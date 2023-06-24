@@ -18,7 +18,7 @@
                     <div class="container-fluid">
                         <div class="row">
                             <div class="col-xs-12">
-                                <legend>Datos básicos</legend>
+                                <legend>Datos del producto</legend>
                             </div>
                             <div class="col-xs-12 col-sm-6 col-md-4">
                               <div class="form-group label-floating">
