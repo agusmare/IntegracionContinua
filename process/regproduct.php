@@ -7,7 +7,7 @@
     $nameProd=consultasSQL::clean_string($_POST['prod-name']);
     $cateProd=consultasSQL::clean_string($_POST['prod-categoria']);
     $priceProd=consultasSQL::clean_string($_POST['prod-price']);
-    $tallaProd=consultasSQL::clean_string($_POST['prod-Talla']);
+    $modelProd=consultasSQL::clean_string($_POST['prod-model']);
     $marcaProd=consultasSQL::clean_string($_POST['prod-marca']);
     $stockProd=consultasSQL::clean_string($_POST['prod-stock']);
     $carProd=consultasSQL::clean_string($_POST['prod-car']);
@@ -20,13 +20,13 @@
     $imgSize=$_FILES['img']['size'];
     $imgMaxSize=5120;
 
-    if($codeProd!="" && $nameProd!="" && $cateProd!="" && $priceProd!="" && $tallaProd!="" && $marcaProd!="" && $stockProd!="" && $carProd!="" && $codePProd!=""){
+    if($codeProd!="" && $nameProd!="" && $cateProd!="" && $priceProd!="" && $modelProd!="" && $marcaProd!="" && $stockProd!="" && $carProd!="" && $codePProd!=""){
         $verificar=  ejecutarSQL::consultar("SELECT * FROM producto WHERE CodigoProd='".$codeProd."'");
         $verificaltotal = mysqli_num_rows($verificar);
         if($verificaltotal<=0){
             if($imgType=="image/jpeg" || $imgType=="image/png"){
                 if(($imgSize/1024)<=$imgMaxSize){
-                    chmod('../assets/imgProduct/', 777);
+                    chmod('../assets/img-products/', 0777);
                     switch ($imgType) {
                       case 'image/jpeg':
                         $imgEx=".jpg";
@@ -36,8 +36,8 @@
                       break;
                     }
                     $imgFinalName=$codeProd.$imgEx;
-                    if(move_uploaded_file($_FILES['img']['tmp_name'],"../assets/imgproduct/".$imgFinalName)){
-                        if(consultasSQL::InsertSQL("producto", "CodigoProd, NombreProd, CodigoCat, Precio, Descuento, Talla, Marca, Stock, Caracteristicas, NITProveedor, Imagen, Nombre, Estado", "'$codeProd','$nameProd','$cateProd','$priceProd', '$descProd', '$tallaProd','$marcaProd','$stockProd', '$carProd', '$codePProd','$imgFinalName','$adminProd', '$estadoProd'")){
+                    if(move_uploaded_file($_FILES['img']['tmp_name'],"../assets/img-products/".$imgFinalName)){
+                        if(consultasSQL::InsertSQL("producto", "CodigoProd, NombreProd, CodigoCat, Precio, Descuento, Modelo, Marca, Stock, Caracteristicas, NITProveedor, Imagen, Nombre, Estado", "'$codeProd','$nameProd','$cateProd','$priceProd', '$descProd', '$modelProd','$marcaProd','$stockProd', '$carProd', '$codePProd','$imgFinalName','$adminProd', '$estadoProd'")){
                             echo '<script>
                                 swal({
                                   title: "Producto registrado",
