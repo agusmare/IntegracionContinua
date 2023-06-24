@@ -37,7 +37,7 @@
                     }
                     $imgFinalName=$codeProd.$imgEx;
                     if(move_uploaded_file($_FILES['img']['tmp_name'],"../assets/imgproduct/".$imgFinalName)){
-                        if(consultasSQL::InsertSQL("producto", "CodigoProd, NombreProd, CodigoCat, Precio, Descuento, Talla, Marca, Stock, Caracteristicas, NITProveedor, Imagen, Nombre, Estado", "'$codeProd','$nameProd','$cateProd','$priceProd', '$descProd', '$modelProd','$marcaProd','$stockProd', '$carProd', '$codePProd','$imgFinalName','$adminProd', '$estadoProd'")){
+                        if(consultasSQL::InsertSQL("producto", "CodigoProd, NombreProd, CodigoCat, Precio, Descuento, Talla, Marca, Stock, Caracteristicas, NITProveedor, Imagen, Nombre, Estado", "'$codeProd','$nameProd','$cateProd','$priceProd', '$descProd', '$tallaProd','$marcaProd','$stockProd', '$carProd', '$codePProd','$imgFinalName','$adminProd', '$estadoProd'")){
                             echo '<script>
                                 swal({
                                   title: "Producto registrado",
