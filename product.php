@@ -12,7 +12,7 @@
     <section id="new-prod-index">    
          <div class="container">
             <div class="page-header">
-                <h1>Nuestras<small>Novedades</small></small></h1>
+                <h1>Nuestras<small> Novedades</small></small></h1>
             </div>
             <div class="row">
               	<?php

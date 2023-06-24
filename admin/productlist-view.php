@@ -24,7 +24,7 @@
                               <th class="text-center">Nombre</th>
                               <th class="text-center">Categoría</th>
                               <th class="text-center">Precio</th>
-                              <th class="text-center">Modelo</th>
+                              <th class="text-center">Talla</th>
                               <th class="text-center">Marca</th>
                               <th class="text-center">Stock</th>
                               <th class="text-center">Proveedor</th>
@@ -64,7 +64,7 @@
                         		?>
                         	</td>
                         	<td class="text-center"><?php echo $prod['Precio']; ?></td>
-                        	<td class="text-center"><?php echo $prod['Modelo']; ?></td>
+                        	<td class="text-center"><?php echo $prod['Talla']; ?></td>
                         	<td class="text-center"><?php echo $prod['Marca']; ?></td>
                         	<td class="text-center"><?php echo $prod['Stock']; ?></td>
                         	<td class="text-center">

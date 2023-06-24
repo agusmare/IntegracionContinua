@@ -20,13 +20,13 @@ include './library/consulSQL.php';
                 </div>
                 <?php 
                     $CodigoProducto=consultasSQL::clean_string($_GET['CodigoProd']);
-                    $productoinfo=  ejecutarSQL::consultar("SELECT producto.CodigoProd,producto.NombreProd,producto.Modelo,producto.CodigoCat,categoria.Nombre,producto.Precio,producto.Descuento,producto.Stock,producto.Caracteristicas,producto.Imagen FROM categoria INNER JOIN producto ON producto.CodigoCat=categoria.CodigoCat  WHERE CodigoProd='".$CodigoProducto."'");
+                    $productoinfo=  ejecutarSQL::consultar("SELECT producto.CodigoProd,producto.NombreProd,producto.Talla,producto.CodigoCat,categoria.Nombre,producto.Precio,producto.Descuento,producto.Stock,producto.Caracteristicas,producto.Imagen FROM categoria INNER JOIN producto ON producto.CodigoCat=categoria.CodigoCat  WHERE CodigoProd='".$CodigoProducto."'");
                     while($fila=mysqli_fetch_array($productoinfo, MYSQLI_ASSOC)){
                         echo '
                             <div class="col-xs-12 col-sm-6">
                                 <h1></strong>'.$fila['NombreProd'].'</h4><h1>
                                 <h4><strong>Precio: </strong>$'.number_format(($fila['Precio']-($fila['Precio']*($fila['Descuento']/100))), 2, '.', '').'</h4><br>
-                                <h4><strong>Referencia: </strong>'.$fila['Modelo'].'</h4><br>
+                                <h4><strong>Referencia: </strong>'.$fila['Talla'].'</h4><br>
                                 <h4><strong>Disponibles en tienda: </strong>'.$fila['Stock'].'</h4><br>
                                 <h4><strong>Caracteísticas: </strong>'.$fila['Caracteristicas'].'</h4>';
                                 if($fila['Stock']>=1){
