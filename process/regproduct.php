@@ -18,7 +18,7 @@
     $imgName=$_FILES['img']['name'];
     $imgType=$_FILES['img']['type'];
     $imgSize=$_FILES['img']['size'];
-    $imgMaxSize=8120;
+    $imgMaxSize=5120;
 
     if($codeProd!="" && $nameProd!="" && $cateProd!="" && $priceProd!="" && $tallaProd!="" && $marcaProd!="" && $stockProd!="" && $carProd!="" && $codePProd!=""){
         $verificar=  ejecutarSQL::consultar("SELECT * FROM producto WHERE CodigoProd='".$codeProd."'");
@@ -26,7 +26,7 @@
         if($verificaltotal<=0){
             if($imgType=="image/jpeg" || $imgType=="image/png"){
                 if(($imgSize/1024)<=$imgMaxSize){
-                    chmod('../assets/imgProducts/', 777);
+                    chmod('../assets/imgProduct/', 777);
                     switch ($imgType) {
                       case 'image/jpeg':
                         $imgEx=".jpg";
@@ -36,7 +36,7 @@
                       break;
                     }
                     $imgFinalName=$codeProd.$imgEx;
-                    if(move_uploaded_file($_FILES['img']['tmp_name'],"../assets/img-products/".$imgFinalName)){
+                    if(move_uploaded_file($_FILES['img']['tmp_name'],"../assets/imgproduct/".$imgFinalName)){
                         if(consultasSQL::InsertSQL("producto", "CodigoProd, NombreProd, CodigoCat, Precio, Descuento, Talla, Marca, Stock, Caracteristicas, NITProveedor, Imagen, Nombre, Estado", "'$codeProd','$nameProd','$cateProd','$priceProd', '$descProd', '$modelProd','$marcaProd','$stockProd', '$carProd', '$codePProd','$imgFinalName','$adminProd', '$estadoProd'")){
                             echo '<script>
                                 swal({

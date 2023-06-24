@@ -22,7 +22,7 @@ $imgMaxSize=5120;
 if($imgName!=""){
   if($imgType=="image/jpeg" || $imgType=="image/png"){
     if(($imgSize/1024)<=$imgMaxSize){
-        chmod('../assets/img-products/', 0777);
+        chmod('../assets/imgproduct/', 0777);
         switch ($imgType) {
           case 'image/jpeg':
             $imgEx=".jpg";
@@ -32,7 +32,7 @@ if($imgName!=""){
           break;
         }
         $imgFinalName=$codeOldProdUp.$imgEx;
-        if(!move_uploaded_file($_FILES['img']['tmp_name'],"../assets/img-products/".$imgFinalName)){
+        if(!move_uploaded_file($_FILES['img']['tmp_name'],"../assets/imgproduct/".$imgFinalName)){
             echo '<script>swal("ERROR", "Ha ocurrido un error al cargar la imagen", "error");</script>';
             exit();
         }
@@ -46,7 +46,7 @@ if($imgName!=""){
   }
 }
 
-if(consultasSQL::UpdateSQL("producto", "NombreProd='$nameProdUp',CodigoCat='$catProdUp',Precio='$priceProdUp',Descuento='$descProdUp',Modelo='$modelProdUp',Marca='$marcaProdUp',Stock='$stockProdUp',Caracteristicas='$carProdUp',NITProveedor='$proveProdUp',Estado='$EstadoProdUp'", "CodigoProd='$codeOldProdUp'")){
+if(consultasSQL::UpdateSQL("producto", "NombreProd='$nameProdUp',CodigoCat='$catProdUp',Precio='$priceProdUp',Descuento='$descProdUp',Talla='$tallaProdUp',Marca='$marcaProdUp',Stock='$stockProdUp',Caracteristicas='$carProdUp',NITProveedor='$proveProdUp',Estado='$EstadoProdUp'", "CodigoProd='$codeOldProdUp'")){
    echo '<script>
     swal({
       title: "Producto actualizado",
