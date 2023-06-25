@@ -1,265 +1,78 @@
-<?php
-include './library/configServer.php';
-include './library/consulSQL.php';
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <title>Productos</title>
+    <title>Inicio</title>
     <?php include './inc/link.php'; ?>
 </head>
-<body id="container-page-product">
+
+<body id="container-page-index">
     <?php include './inc/navbar.php'; ?>
-    <section id="store">
-       <br>
-        <div class="container">
-            <?php
-            /* muestra los productos al seleccionar la categoria */
-              $checkAllCat=ejecutarSQL::consultar("SELECT * FROM categoria");
-              if(mysqli_num_rows($checkAllCat)>=1):
-            ?>
-              <div class="container-fluid">
-                <div class="row">
-                  <div class="col-xs-12 col-md-4">
-                    <div class="dropdown">
-                      <button class="btn btn-primary btn-raised dropdown-toggle" type="button" id="drpdowncategory" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        Seleccione una categoría &nbsp;
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="drpdowncategory">
-                        <?php 
-                          while($cate=mysqli_fetch_array($checkAllCat, MYSQLI_ASSOC)){
-                              echo '
-                                <li><a href="product.php?categ='.$cate['CodigoCat'].'">'.$cate['Nombre'].'</a></li>
-                                <li role="separator" class="divider"></li>
-                              ';
-                          }
-                        ?>
-                      </ul>
-                    </div>
-                    </div>
-                    <div class="col-xs-12 col-md-4 col-md-offset-4">
-                    <form action="./search.php" method="GET">
-                      <div class="form-group">
-                        <div class="input-group">
-                          <span class="input-group-addon"><i class="fa fa-search" aria-hidden="true"></i></span>
-                          <input type="text" id="addon1" class="form-control" name="term" required="" title="Escriba nombre o marca del producto">
-                          <span class="input-group-btn">
-                              <button class="btn btn-info btn-raised" type="submit">Buscar</button>
-                          </span>
-                        </div>
-                      </div>
-                    </form>
-                    </div>
-                    <?php
-                $categoria=consultasSQL::clean_string($_GET['categ']);
-                if(isset($categoria) && $categoria!=""){
-            ?>
-              <div class="row">
-                <?php
-                  $mysqli = mysqli_connect(SERVER, USER, PASS, BD);
-                  mysqli_set_charset($mysqli, "utf8");
-
-                  $pagina = isset($_GET['pag']) ? (int)$_GET['pag'] : 1;
-                  $regpagina = 20;
-                  $inicio = ($pagina > 1) ? (($pagina * $regpagina) - $regpagina) : 0;
-
-                  $consultar_productos=mysqli_query($mysqli,"SELECT SQL_CALC_FOUND_ROWS * FROM producto WHERE CodigoCat='$categoria' AND Stock > 0 AND Estado='Activo' LIMIT $inicio, $regpagina");
-
-                  $selCat=ejecutarSQL::consultar("SELECT * FROM categoria WHERE CodigoCat='$categoria'");
-                  $datCat=mysqli_fetch_array($selCat, MYSQLI_ASSOC);
-
-                  $totalregistros = mysqli_query($mysqli,"SELECT FOUND_ROWS()");
-                  $totalregistros = mysqli_fetch_array($totalregistros, MYSQLI_ASSOC);
-        
-                  $numeropaginas = ceil($totalregistros["FOUND_ROWS()"]/$regpagina);
-
-                  if(mysqli_num_rows($consultar_productos)>=1){
-                    echo '<h3 class="text-center"><strong>'.$datCat['Nombre'].'</strong></h3><br>';
-                    while($prod=mysqli_fetch_array($consultar_productos, MYSQLI_ASSOC)){
+    
+    
+    <section id="new-prod-index">    
+         <div class="container">
+            <div class="page-header">
+                <h1>Nuestras<small> Novedades</small></small></h1>
+            </div>
+            <div class="row">
+              	<?php
+                  include 'library/configServer.php';
+                  include 'library/consulSQL.php';
+                  $consulta= ejecutarSQL::consultar("SELECT * FROM producto WHERE Stock > 0 AND Estado='Activo' ORDER BY id DESC LIMIT 7");
+                  $totalproductos = mysqli_num_rows($consulta);
+                  if($totalproductos>0){
+                      while($fila=mysqli_fetch_array($consulta, MYSQLI_ASSOC)){
                 ?>
-                    <div class="col-xs-12 col-sm-6 col-md-4">
-                         <div class="thumbnail">
-                           <img class="img-product" src="./assets/img-products/<?php if($prod['Imagen']!="" && is_file("./assets/img-products/".$prod['Imagen'])){ echo $prod['Imagen']; }else{ echo "default.png"; } ?>
-                           ">
-                           <div class="caption">
-                             <h3><?php echo $prod['Marca']; ?></h3>
-                             <p><?php echo $prod['NombreProd']; ?></p>
-                             <?php if($prod['Descuento']>0): ?>
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                     <div class="thumbnail">
+                       <img class="img-product" src="assets/img-products/<?php if($fila['Imagen']!="" && is_file("./assets/img-products/".$fila['Imagen'])){ echo $fila['Imagen']; }else{ echo "default.png"; } ?>">
+                       <div class="caption">
+                       		<h3><?php echo $fila['Marca']; ?></h3>
+                            <p><?php echo $fila['NombreProd']; ?></p>
+                            <?php if($fila['Descuento']>0): ?>
                              <p>
                              <?php
-                             $pref=number_format($prod['Precio']-($prod['Precio']*($prod['Descuento']/100)), 2, '.', '');
-                             echo $prod['Descuento']."% descuento: $".$pref; 
+                             $pref=number_format($fila['Precio']-($fila['Precio']*($fila['Descuento']/100)), 2, '.', '');
+                             echo $fila['Descuento']."% descuento: $".$pref; 
                              ?>
                              </p>
                              <?php else: ?>
-                              <p>$<?php echo $prod['Precio']; ?></p>
+                              <p>$<?php echo $fila['Precio']; ?></p>
                              <?php endif; ?>
-                             <p class="text-center">
-                                 <a href="infoProd.php?CodigoProd=<?php echo $prod['CodigoProd']; ?>" class="btn btn-primary btn-raised btn-sm btn-block"><i class="fa fa-plus"></i>&nbsp; Detalles</a>
-                             </p>
-
-                           </div>
-                         </div>
-                     </div>     
-                <?php    
-                  }
-                  if($numeropaginas>0):
-                ?>
-                <div class="clearfix"></div>
-                <div class="text-center">
-                  <ul class="pagination">
-                    <?php if($pagina == 1): ?>
-                        <li class="disabled">
-                            <a>
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    <?php else: ?>
-                        <li>
-                            <a href="product.php?categ=<?php echo $categoria; ?>&pag=<?php echo $pagina-1; ?>">
-                                <span aria-hidden="true">&laquo;</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-
-
-                    <?php
-                        for($i=1; $i <= $numeropaginas; $i++ ){
-                            if($pagina == $i){
-                                echo '<li class="active"><a href="product.php?categ='.$categoria.'&pag='.$i.'">'.$i.'</a></li>';
-                            }else{
-                                echo '<li><a href="product.php?categ='.$categoria.'&pag='.$i.'">'.$i.'</a></li>';
-                            }
-                        }
-                    ?>
-                    
-
-                    <?php if($pagina == $numeropaginas): ?>
-                        <li class="disabled">
-                            <a>
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    <?php else: ?>
-                        <li>
-                            <a href="product.php?categ=<?php echo $categoria; ?>&pag=<?php echo $pagina+1; ?>">
-                                <span aria-hidden="true">&raquo;</span>
-                            </a>
-                        </li>
-                    <?php endif; ?>
-                  </ul>
-                </div>
+                        <p class="text-center">
+                            <a href="infoProd.php?CodigoProd=<?php echo $fila['CodigoProd']; ?>" class="btn btn-primary btn-sm btn-raised btn-block"><i class="fa fa-plus"></i>&nbsp; Detalles</a>
+                        </p>
+                       </div>
+                     </div>
+                </div>     
                 <?php
-                  endif;
+                     }   
                   }else{
-                    echo '<h2 class="text-center"> Pronto encontrarás productos en <strong>'.$datCat['Nombre'].'</strong></h2>';
-                  }
-                ?>
-              </div>
-            <?php
-                }else{                        
-                  $mysqli = mysqli_connect(SERVER, USER, PASS, BD);
-                  mysqli_set_charset($mysqli, "utf8");
+                      echo '<h2>No hay productos registrados en la tienda</h2>';
+                  }  
+              	?>  
+            </div>
+         </div>
+    </section>
+    <section id="reg-info-index">
+        <div class="container">
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 text-center">
+                   <article style="margin-top:5%;">
+                        <p><i class="fa fa-users fa-4x"></i></p>
+                        <h3>Registrate</h3>
+                        <p>Registrate como cliente de <span class="tittles-pages-logo">SpeedyStore</span> en un sencillo formulario para poder completar tus pedidos</p>
+                        <p><a href="registration.php" class="btn btn-info btn-raised btn-block">Registrarse</a></p>   
+                   </article>
+                </div>
 
-                  $pagina = isset($_GET['pag']) ? (int)$_GET['pag'] : 1;
-                  $regpagina = 20;
-                  $inicio = ($pagina > 1) ? (($pagina * $regpagina) - $regpagina) : 0;
-
-                  $consultar_productos=mysqli_query($mysqli,"SELECT SQL_CALC_FOUND_ROWS * FROM producto WHERE Stock > 0 AND Estado='Activo' LIMIT $inicio, $regpagina");
-
-                  $selCat=ejecutarSQL::consultar("SELECT * FROM producto ");
-                  $datCat=mysqli_fetch_array($selCat, MYSQLI_ASSOC);
-
-                  $totalregistros = mysqli_query($mysqli,"SELECT FOUND_ROWS()");
-                  $totalregistros = mysqli_fetch_array($totalregistros, MYSQLI_ASSOC);
-        
-                  $numeropaginas = ceil($totalregistros["FOUND_ROWS()"]/$regpagina);
-
-                  /* muestra los productos en la pagina principal */
-
-                  if(mysqli_num_rows($consultar_productos)>=1){
-                    while($prod=mysqli_fetch_array($consultar_productos, MYSQLI_ASSOC)){
-
-                      ?>
-                    <div class="col-xs-12 col-sm-6 col-md-4">
-                         <div class="thumbnail">
-                           <img class="img-product" src="./assets/img-products/<?php if($prod['Imagen']!="" && is_file("./assets/img-products/".$prod['Imagen'])){ echo $prod['Imagen']; }else{ echo "default.png"; } ?>
-                           ">
-                           <div class="caption">
-                             <h3><?php echo $prod['Marca']; ?></h3>
-                             <p><?php echo $prod['NombreProd']; ?></p>
-                             <?php if($prod['Descuento']>0): ?>
-                             <p>
-                             <?php
-                             $pref=number_format($prod['Precio']-($prod['Precio']*($prod['Descuento']/100)), 2, '.', '');
-                             echo $prod['Descuento']."% descuento: $".$pref; 
-                             ?>
-                             </p>
-                             <?php else: ?>
-                              <p>$<?php echo $prod['Precio']; ?></p>
-                             <?php endif; ?>
-                             <p class="text-center">
-                                 <a href="infoProd.php?CodigoProd=<?php echo $prod['CodigoProd']; ?>" class="btn btn-primary btn-raised btn-sm btn-block"><i class="fa fa-plus"></i>&nbsp; Detalles</a>
-                             </p>
-
-                           </div>
-                         </div>
-                     </div>     
-                  <?php  
-                    }
-                    if($numeropaginas>0):
-                      ?>
-                      <div class="clearfix"></div>
-                      <div class="text-center">
-                        <ul class="pagination">
-                          <?php if($pagina == 1): ?>
-                              <li class="disabled">
-                                  <a>
-                                      <span aria-hidden="true">&laquo;</span>
-                                  </a>
-                              </li>
-                          <?php else: ?>
-                              <li>
-                                  <a href="product.php?categ=<?php echo $categoria; ?>&pag=<?php echo $pagina-1; ?>">
-                                      <span aria-hidden="true">&laquo;</span>
-                                  </a>
-                              </li>
-                          <?php endif; ?>
-                          <?php
-                              for($i=1; $i <= $numeropaginas; $i++ ){
-                                  if($pagina == $i){
-                                      echo '<li class="active"><a href="product.php?categ='.$categoria.'&pag='.$i.'">'.$i.'</a></li>';
-                                  }else{
-                                      echo '<li><a href="product.php?categ='.$categoria.'&pag='.$i.'">'.$i.'</a></li>';
-                                  }
-                              }
-                          ?>      
-                          <?php if($pagina == $numeropaginas): ?>
-                              <li class="disabled">
-                                  <a>
-                                      <span aria-hidden="true">&raquo;</span>
-                                  </a>
-                              </li>
-                          <?php else: ?>
-                              <li>
-                                  <a href="product.php?categ=<?php echo $categoria; ?>&pag=<?php echo $pagina+1; ?>">
-                                      <span aria-hidden="true">&raquo;</span>
-                                  </a>
-                              </li>
-                          <?php endif; ?>
-                        </ul>
-                      </div>
-                      <?php
-                        endif;
-                  }
-                }
-              else: /* muestra error si no se encuentran productos */
-                echo '<h2 class="text-center">Lo sentimos, no hay productos ni categorías registradas en la tienda</h2>';
-              endif;
-            ?>
+                <div class="col-xs-12 col-sm-6">
+                    <img src="assets/img/tv.png" alt="Smart-TV" class="img-responsive" style="width: 80%; display: block; margin: 0 auto;">
+                </div>
+            </div>
         </div>
     </section>
+
     <?php include './inc/footer.php'; ?>
 </body>
 </html>
