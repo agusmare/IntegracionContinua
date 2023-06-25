@@ -1,2 +1,14 @@
 lenguaje: php
-php:-"8.0"
+php:
+  -8.0
+
+cache:
+  directories:
+    -vendor
+
+before_script:
+  -composer install --no-interaction
+
+script:
+  -composer phpcs-auto-check-project
+  -composer phpunit
