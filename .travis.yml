@@ -44,4 +44,4 @@ jobs:
       env:
         - COMPOSER_FLAGS: '"--prefer-stable --prefer-lowest"'
           COVERAGE: 'true'
-          TEST_COMMAND: '"composer test-ci"'
+          
